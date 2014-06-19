@@ -22,7 +22,8 @@ namespace HeapDemo
             _array = new T[array.Length];
             Array.Copy(array, _array, array.Length);
             _count = array.Length;
-            Create();
+            Create(_count);
+
         }
 
         public void Sort()
@@ -43,7 +44,7 @@ namespace HeapDemo
         {
             if (_array.Length > _count)
             {
-                _array[_count + 1] = item;
+                _array[_count] = item;
             }
             else
             {
@@ -51,7 +52,7 @@ namespace HeapDemo
                 Array.Copy(_array, tempArray, _array.Length);
                 _array = new T[_array.Length * 2];
                 Array.Copy(tempArray, _array, tempArray.Length);
-            }            
+            }
             _count++;
             RebuildFromBotton();
         }
@@ -91,12 +92,12 @@ namespace HeapDemo
             int index = 0;
             for (int i = 0; i < _array.Length; i++)
             {
-                if (_array[i].CompareTo(item)==0)
+                if (_array[i].CompareTo(item) == 0)
                 {
                     index = i;
                 }
             }
-            for (int i = index; i < _array.Length-1; i++)
+            for (int i = index; i < _array.Length - 1; i++)
             {
                 _array[i] = _array[i + 1];
             }
@@ -105,7 +106,7 @@ namespace HeapDemo
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < _count+1; i++)
+            for (int i = 0; i < _count; i++)
             {
                 yield return _array[i];
             }
@@ -126,9 +127,9 @@ namespace HeapDemo
 
         private void RebuildFromTop(int length)
         {
-            int len = length / 2-1;
+            int len = length / 2 - 1;
             int index = 0;
-            while (index<=len)
+            while (index <= len)
             {
                 int left = 2 * index + 1;
                 int right = 2 * index + 2;
@@ -165,43 +166,41 @@ namespace HeapDemo
 
         }
 
-        private void Create()
+        private void Create(int index)
         {
             if (_array != null)
             {
-                for (int i = _array.Length / 2 - 1; i >= 0; i--)
+                for (int i = index / 2 - 1; i >= 0; i--)
                 {
                     int left = 2 * i + 1;
                     int right = 2 * i + 2;
-                    if (right <= _array.Length)
+                    int large = i;
+                    if (_array[i].CompareTo(_array[left]) > 0)
                     {
-                        if (_array[i].CompareTo(_array[left]) > 0)
+                        if (_array[i].CompareTo(_array[right]) < 0)
                         {
-                            if (_array[i].CompareTo(_array[right]) < 0)
-                            {
-                                Swap(i, right);
-                            }
+                            large = right;
+                        }
+                    }
+                    else
+                    {
+                        if (_array[left].CompareTo(_array[right]) > 0)
+                        {
+                            large = left;
                         }
                         else
                         {
-                            if (_array[left].CompareTo(_array[right]) > 0)
-                            {
-                                Swap(i, left);
-                            }
-                            else
-                            {
-                                Swap(i, right);
-                            }
+                            large = right;
                         }
                     }
-                    else if (left <= _array.Length)
+                    if (large > i)
                     {
-                        if (_array[i].CompareTo(_array[left]) < 0)
-                        {
-                            Swap(i, left);
-                        }
+                        Swap(i, large);
+                        Create(large);
                     }
+
                 }
+                
             }
         }
 
