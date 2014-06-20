@@ -129,14 +129,6 @@ namespace HeapDemo
             return GetEnumerator();
         }
 
-        public void Print()
-        {
-            foreach (T item in _array)
-            {
-                Console.WriteLine(item);
-            }
-        }
-
         private void RebuildFromTop(int length)
         {
             int len = length / 2 - 1;
