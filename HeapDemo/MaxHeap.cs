@@ -48,10 +48,17 @@ namespace HeapDemo
             }
             else
             {
-                T[] tempArray = new T[_array.Length];
-                Array.Copy(_array, tempArray, _array.Length);
-                _array = new T[_array.Length * 2];
-                Array.Copy(tempArray, _array, tempArray.Length);
+                if (_array.Length == 0)
+                {
+                    _array[0] = item;
+                }
+                else
+                {
+                    T[] tempArray = new T[_array.Length];
+                    Array.Copy(_array, tempArray, _array.Length);
+                    _array = new T[_array.Length * 2];
+                    Array.Copy(tempArray, _array, tempArray.Length);
+                }
             }
             _count++;
             RebuildFromBotton();
@@ -200,7 +207,7 @@ namespace HeapDemo
                     }
 
                 }
-                
+
             }
         }
 
