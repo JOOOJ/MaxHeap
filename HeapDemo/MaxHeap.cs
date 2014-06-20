@@ -20,9 +20,13 @@ namespace HeapDemo
         public MaxHeap(T[] array)
         {
             _array = new T[array.Length];
-            Array.Copy(array, _array, array.Length);
-            _count = array.Length;
-            Create(_count);
+            //Array.Copy(array, _array, array.Length);
+            //_count = array.Length;
+            //Create(_count);
+            foreach (T item in array)
+            {
+                Add(item);
+            }
 
         }
 
@@ -61,7 +65,8 @@ namespace HeapDemo
                 }
             }
             _count++;
-            RebuildFromBotton();
+            //RebuildFromBotton();
+            Create(_count-1);
         }
 
         public void Clear()
@@ -168,46 +173,21 @@ namespace HeapDemo
             }
         }
 
-        private void RebuildFromBotton()
+        private void Create(int curIndex)
         {
-
-        }
-
-        private void Create(int index)
-        {
-            if (_array != null)
+            int parent = (curIndex - 1) / 2;
+            while (parent >= 0)
             {
-                for (int i = index / 2 - 1; i >= 0; i--)
+                if (_array[curIndex].CompareTo(_array[parent]) > 0)
                 {
-                    int left = 2 * i + 1;
-                    int right = 2 * i + 2;
-                    int large = i;
-                    if (_array[i].CompareTo(_array[left]) > 0)
-                    {
-                        if (_array[i].CompareTo(_array[right]) < 0)
-                        {
-                            large = right;
-                        }
-                    }
-                    else
-                    {
-                        if (_array[left].CompareTo(_array[right]) > 0)
-                        {
-                            large = left;
-                        }
-                        else
-                        {
-                            large = right;
-                        }
-                    }
-                    if (large > i)
-                    {
-                        Swap(i, large);
-                        Create(large);
-                    }
-
+                    Swap(curIndex, parent);
+                    curIndex = parent;
+                    parent = (parent - 1) / 2;
                 }
-
+                else
+                {
+                    break;
+                }
             }
         }
 
