@@ -65,7 +65,6 @@ namespace HeapDemo
                 }
             }
             _count++;
-            //RebuildFromBotton();
             Create(_count-1);
         }
 
@@ -112,7 +111,9 @@ namespace HeapDemo
             for (int i = index; i < _array.Length - 1; i++)
             {
                 _array[i] = _array[i + 1];
+                Create(i);
             }
+            _count--;
             return true;
         }
 
